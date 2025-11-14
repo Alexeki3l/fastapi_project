@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fastapi
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pgadmin_server:
+    image: dpage/pgadmin4
+    container_name: pgadmin_server
+    restart: always 
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@fastapi.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - postgres_db
+
+  api:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+    # Este comentario es amanera de dejar claro que esta variables de entorno de momento se quedan asi.
+    # mas adelante usare un archivo .env
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres_db:5432/fastapi
+      SECRET_KEY: supersecretkey
+    depends_on:
+      - postgres_db
+    volumes:
+      - .:/usr/src/app
+
+volumes:
+  db_data:
