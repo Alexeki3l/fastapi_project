@@ -30,11 +30,7 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     ports:
       - "8000:8000"
-    environment:
-    # Este comentario es amanera de dejar claro que esta variables de entorno de momento se quedan asi.
-    # mas adelante usare un archivo .env
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres_db:5432/fastapi
-      SECRET_KEY: supersecretkey
+    
     depends_on:
       - postgres_db
     volumes:
