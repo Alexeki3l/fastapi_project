@@ -1,3 +1,4 @@
+from typing import Optional
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from datetime import datetime
 
@@ -16,6 +17,12 @@ class UserRead(BaseModel):
     email: EmailStr
     created_at: datetime
     updated_at: datetime
+    
+class UserUpdate(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    
+    email: Optional[EmailStr]=None
+    password: Optional[str]=None
     
 
     
