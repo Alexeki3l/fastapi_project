@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, relationship
 
 from app.models.mixins import SoftDeleteMixin, TimestampMixin
 
-Base = declarative_base()
+from app.db.base import Base
 
 class User(Base, TimestampMixin, SoftDeleteMixin):
     __tablename__ = "users"

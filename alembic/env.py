@@ -7,7 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.models.user import Base
+from app.db.base import Base
+
+import app.models.user
+import app.models.post
+import app.models.comment
+import app.models.tag
 
 config = context.config
 

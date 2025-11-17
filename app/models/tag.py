@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship, declarative_base
 from app.models.mixins import TimestampMixin, SoftDeleteMixin
 
-Base = declarative_base()
+from app.db.base import Base
 
 class Tag(Base, TimestampMixin, SoftDeleteMixin):
     __tablename__ = "tags"
