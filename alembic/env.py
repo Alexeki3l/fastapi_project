@@ -5,18 +5,14 @@ from sqlalchemy import create_engine
 from alembic import context
 from dotenv import load_dotenv
 
-# Carga variables de entorno del .env
 load_dotenv()
 
-# Importa tus modelos
 from app.models.user import Base
 
-# Configuración Alembic
 config = context.config
 
-# Obtiene la URL de la base de datos desde el .env
 DATABASE_URL = os.getenv("DATABASE_URL")
-# Convierte a URL síncrona para Alembic (psycopg)
+
 if DATABASE_URL.startswith("postgresql+asyncpg://"):
     DATABASE_URL_SYNC = DATABASE_URL.replace("postgresql+asyncpg://", "postgresql+psycopg://")
 else:
@@ -24,7 +20,6 @@ else:
 
 config.set_main_option("sqlalchemy.url", DATABASE_URL_SYNC)
 
-# Logger
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
