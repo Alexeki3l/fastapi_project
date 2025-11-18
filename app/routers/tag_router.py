@@ -24,7 +24,7 @@ async def create_tag(payload: TagCreate, session: AsyncSession = Depends(get_ses
 async def list_tags(page: int = 1, page_size: int = 10,session: AsyncSession = Depends(get_session)):
     try:
         result = await paginate(session, Tag, page, page_size)
-        result["items"] = [TagRead.model_validate(user) for user in result["items"]]
+        result["items"] = [TagRead.model_validate(tag) for tag in result["items"]]
         return result
     except HTTPException as e:
         raise 

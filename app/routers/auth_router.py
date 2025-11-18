@@ -15,7 +15,6 @@ router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/register", response_model=UserRead)
 async def register(payload: UserCreate, session: AsyncSession = Depends(get_session)):
-    print("entra")
     q = await session.execute(select(User).filter_by(email=payload.email))
     existing = q.scalar_one_or_none()
     if existing:
@@ -37,5 +36,5 @@ async def login(payload: LoginPayload, session: AsyncSession = Depends(get_sessi
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid credentials"
             )
-    access_token = create_access_token({"sub": user.email})
-    return {"access_token": access_token, "token_type": "bearer"}
+    access_token = create_access_token({"sub": str(user.id), "email": user.email})
+    return {"access_token": access_token}
