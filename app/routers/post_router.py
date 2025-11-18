@@ -4,8 +4,9 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from app.common.utils.paginate import paginate
 from app.db.session import get_session
-from app.schemas.post_schema import PostCreate, PostRead, PostUpdate
-from app.models.post import Post, post_tags
+from app.schemas.post_schema import PostCreate, PostRead, PostReadFull, PostUpdate
+from app.models.post import Post
+from app.models.comment import Comment
 from app.models.tag import Tag
 from app.core.deps import get_current_user
 from app.models.user import User
@@ -55,14 +56,15 @@ async def list_posts(page: int = 1, page_size: int = 10, session: AsyncSession =
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
-@router.get("/{post_id}", response_model=PostRead)
+@router.get("/{post_id}", response_model=PostReadFull)
 async def get_post(post_id: int, session: AsyncSession = Depends(get_session)):
     query = await session.execute(
             select(Post)
             .filter(Post.id == post_id, Post.is_deleted==False)
             .options(
                 selectinload(Post.tags),
-                selectinload(Post.author)
+                selectinload(Post.author),
+                selectinload(Post.comments).selectinload(Comment.author)
             )
         )
     post = query.scalar_one_or_none()

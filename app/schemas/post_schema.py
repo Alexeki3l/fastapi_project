@@ -4,6 +4,8 @@ from typing import List, Optional
 
 from app.schemas.tag_schema import TagRead
 from app.schemas.user_schema import UserRead
+from app.schemas.comment_schema import CommentRead
+
 
 class PostBase(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -23,5 +25,13 @@ class PostRead(PostBase):
     id: int
     author: UserRead
     tags: List[TagRead] = []
+    created_at: datetime
+    updated_at: datetime
+    
+class PostReadFull(PostBase):
+    id: int
+    author: UserRead
+    tags: List[TagRead] = []
+    comments: List[CommentRead] = []
     created_at: datetime
     updated_at: datetime
