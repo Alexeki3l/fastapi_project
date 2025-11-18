@@ -4,7 +4,7 @@ from sqlalchemy import select
 from app.common.utils.paginate import paginate
 from app.db.session import get_session
 from app.models.user import User
-from app.schemas.user import UserCreate, UserRead, UserUpdate
+from app.schemas.user_schema import UserCreate, UserRead, UserUpdate
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
