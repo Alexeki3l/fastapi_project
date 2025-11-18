@@ -24,5 +24,10 @@ class UserUpdate(BaseModel):
     email: Optional[EmailStr]=None
     password: Optional[str]=None
     
+class UserAuth(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    access_token: str
+    token_type: str = "bearer"
+    
 
     
