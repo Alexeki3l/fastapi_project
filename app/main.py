@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
-from app.routers import post_router, tag_router, user_router, auth_router
+from app.routers import post_router, tag_router, user_router, auth_router, comment_router
 
 app = FastAPI(
     title="Proyecto FastAPI Challenge",
@@ -14,3 +14,5 @@ app.include_router(auth_router.router)
 app.include_router(user_router.router)
 app.include_router(post_router.router)
 app.include_router(tag_router.router)
+app.include_router(comment_router.router)
+
