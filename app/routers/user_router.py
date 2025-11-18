@@ -18,6 +18,18 @@ async def get_users(page: int = 1, page_size: int = 10, db: AsyncSession = Depen
         raise 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
+    
+@router.get("/{deleted}")
+async def get_users(deleted: str,page: int = 1, page_size: int = 10, db: AsyncSession = Depends(get_session)):
+    try:
+        is_deleted = True if deleted == "true" else False
+        result = await paginate(db, User, page, page_size, is_deleted)
+        result["items"] = [UserRead.model_validate(user) for user in result["items"]]
+        return result
+    except HTTPException as e:
+        raise 
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 @router.get("/{user_id}")
 async def get_user(user_id: int, db: AsyncSession = Depends(get_session)):
